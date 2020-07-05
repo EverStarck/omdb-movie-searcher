@@ -1,4 +1,12 @@
+import React, {useState} from "react";
 import styled from "@emotion/styled";
+
+const Error = styled.p`
+  color: red;
+  background: #fff;
+  position: absolute;
+  transform:translateY(100%);
+`;
 
 const HeaderStyled = styled.header`
   width: 100vw;
@@ -47,12 +55,12 @@ const HeaderStyled = styled.header`
       }
     }
     @media screen and (max-width: 600px) {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       h2 {
-          margin-left: 0;
-          margin-bottom: 0;
+        margin-left: 0;
+        margin-bottom: 0;
       }
       form {
         width: 100%;
@@ -62,13 +70,35 @@ const HeaderStyled = styled.header`
   }
 `;
 
-const Header = () => {
+const Header = ({searchValue, setSearchValue}) => {
+  const [error, setError] = useState(false);
+
+  const refreshInput = (e) => {
+    setSearchValue(e.target.value)
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if(searchValue.trim() === "") {
+      setError(true);
+      return;
+    }
+    setSearchValue("");
+    setError(false);
+  };
+
   return (
     <HeaderStyled>
       <nav>
         <h2>HOOKED</h2>
-        <form>
-          <input type="text" placeholder="Movie name"/>
+        <form onSubmit={onSubmit}>
+          {error ? <Error>Complete the field</Error> :null}
+          <input
+            type="text"
+            placeholder="Movie name"
+            value={searchValue}
+            onChange={refreshInput}
+          />
           <button type="submit">Search</button>
         </form>
       </nav>

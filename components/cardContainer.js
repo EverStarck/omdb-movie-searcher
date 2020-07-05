@@ -1,5 +1,5 @@
+import React from 'react';
 import Card from "./card";
-
 import styled from "@emotion/styled";
 
 const CardFrame = styled.main`
@@ -15,12 +15,12 @@ const CardGrid = styled.section`
   gap: 20px;
 `;
 
-const CardContainer = ({ movies }) => {
+const CardContainer = ({Search}) => {
   return (
     <CardFrame>
       <CardGrid>
-        {movies.Search.map((movie) => (
-          <Card key={movie.imdbID} movie={movie} />
+        {Search.map(movie => (
+          <Card movie={movie} key={movie.imdbID}/>
         ))}
       </CardGrid>
     </CardFrame>
