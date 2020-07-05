@@ -15,11 +15,12 @@ const CardGrid = styled.section`
   gap: 20px;
 `;
 
-const CardContainer = ({Search}) => {
+const CardContainer = ({movies}) => {
+  console.log(movies)
   return (
     <CardFrame>
       <CardGrid>
-        {Search.map(movie => (
+        {movies.Search.map(movie => (
           <Card movie={movie} key={movie.imdbID}/>
         ))}
       </CardGrid>
