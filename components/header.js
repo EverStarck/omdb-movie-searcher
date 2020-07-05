@@ -9,7 +9,7 @@ const Error = styled.p`
 `;
 
 const HeaderStyled = styled.header`
-  width: 100vw;
+  /* width: 100vw; */
   min-height: 15vh;
   display: flex;
   flex-direction: column;
@@ -70,7 +70,8 @@ const HeaderStyled = styled.header`
   }
 `;
 
-const Header = ({searchValue, setSearchValue}) => {
+const Header = (props) => {
+  const [searchValue, setSearchValue] = useState("");
   const [error, setError] = useState(false);
 
   const refreshInput = (e) => {
@@ -79,12 +80,16 @@ const Header = ({searchValue, setSearchValue}) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    // Validation
     if(searchValue.trim() === "") {
       setError(true);
       return;
     }
-    setSearchValue("");
+
     setError(false);
+    setSearchValue("");
+    props.search(searchValue);
   };
 
   return (

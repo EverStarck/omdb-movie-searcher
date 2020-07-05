@@ -1,23 +1,38 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Header from "../components/header";
 import CardContainer from "../components/cardContainer";
 
-export default function Home(props) {
-  const [searchValue, setSearchValue] = useState("");
-  const [movies, setMovies] = useState({});
-  // const {movies} = props;
-  // const {Search} = movies;
+export default function Home() {
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  const callToApi = async() => {
-    const url = await fetch(`http://www.omdbapi.com/?apikey=6e87ced2&s=john`);
-    const moviesJson = await url.json();
-    setMovies(moviesJson);
-  }
+  useEffect(async () => {
+    const response = await fetch(
+      `http://www.omdbapi.com/?apikey=6e87ced2&s=john`
+    );
+    const jsonResponse = await response.json();
+    setMovies(jsonResponse.Search);
+    setLoading(false);
+  }, []);
 
-  useEffect(() => {
-    callToApi();
-  },[])
+  const search = async (searchValue) => {
+    setLoading(true);
+    setErrorMessage(null);
+
+    const response = await fetch(
+      `http://www.omdbapi.com/?apikey=6e87ced2&s=${searchValue}`
+    );
+    const jsonResponse = await response.json();
+    if (jsonResponse.Response === "True") {
+      setMovies(jsonResponse.Search);
+      setLoading(false);
+    } else {
+      setErrorMessage(jsonResponse.Error);
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -26,9 +41,13 @@ export default function Home(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
+      <Header search={search} />
 
-      <CardContainer movies={movies} />
+      <CardContainer
+        loading={loading}
+        errorMessage={errorMessage}
+        movies={movies}
+      />
 
       <style jsx global>{`
         html,
@@ -47,9 +66,3 @@ export default function Home(props) {
     </>
   );
 }
-
-// export async function getServerSideProps(context) {
-//   const url = await fetch(`http://www.omdbapi.com/?apikey=6e87ced2&s=john`);
-//   const movies = await url.json();
-//   return { props: { movies }};
-// }
