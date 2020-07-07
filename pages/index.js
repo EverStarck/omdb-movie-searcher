@@ -8,13 +8,16 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  useEffect(async () => {
-    const response = await fetch(
-      `http://www.omdbapi.com/?apikey=6e87ced2&s=john`
-    );
-    const jsonResponse = await response.json();
-    setMovies(jsonResponse.Search);
-    setLoading(false);
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        `https://www.omdbapi.com/?apikey=6e87ced2&s=john`
+      );
+      const jsonResponse = await response.json();
+      setMovies(jsonResponse.Search);
+      setLoading(false);
+    }
+    fetchData();
   }, []);
 
   const search = async (searchValue) => {
@@ -22,7 +25,7 @@ export default function Home() {
     setErrorMessage(null);
 
     const response = await fetch(
-      `http://www.omdbapi.com/?apikey=6e87ced2&s=${searchValue}`
+      `https://www.omdbapi.com/?apikey=6e87ced2&s=${searchValue}`
     );
     const jsonResponse = await response.json();
     if (jsonResponse.Response === "True") {
