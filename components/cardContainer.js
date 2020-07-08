@@ -16,7 +16,7 @@ const CardGrid = styled.section`
 `;
 
 const CardContainer = ({ loading, errorMessage, movies }) => {
-  // console.log(movies);
+  console.log(movies);
   return (
     <CardFrame>
       <CardGrid>
