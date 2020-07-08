@@ -15,7 +15,7 @@ const CardGrid = styled.section`
   gap: 20px;
 `;
 
-const CardContainer = ({loading, errorMessage, movies }) => {
+const CardContainer = ({ loading, errorMessage, movies }) => {
   // console.log(movies);
   return (
     <CardFrame>
@@ -25,8 +25,9 @@ const CardContainer = ({loading, errorMessage, movies }) => {
         ) : errorMessage ? (
           <div className="errorMessage">{errorMessage}</div>
         ) : (
-          movies.map((movie, index) => (
-            <Card key={`${index}-${movie.Title}`} movie={movie} />
+          movies.map((movie) => (
+            // {/* key={`${index}-${movie.Title}`} */}
+            <Card movie={movie} key={movie.imdbID} />
           ))
         )}
 
